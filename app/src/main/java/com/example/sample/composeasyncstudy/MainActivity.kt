@@ -51,6 +51,10 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
             mainViewModel.suspendFunction("hello World!")
         }
 
+
+        // 패턴1: Compose 내부에서 `LaunchedEffect`를 사용하여 `StateFlow`를 수집
+        // Compose의 생명주기에 따라, 이 LaunchedEffect는 Compose가 구성 해제되거나 Compose가 백스택으로 전환되면 취소됩니다.
+        // 따라서, 앱이 백그라운드로 전환되더라도 이 작업은 메모리 누수를 발생시키지 않습니다.
         LaunchedEffect(key1 = mainViewModel) {
             mainViewModel.textStateFlow.collect {
                 textFlow = it
@@ -73,6 +77,10 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
         Spacer(modifier = Modifier.height(16.dp).fillMaxWidth().border(border = BorderStroke(width = 16.dp, color = Color.Black)))
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = text2)
+
+        // 패턴2: `viewModelScope`를 사용하여 `StateFlow`를 수집
+        // ViewModel의 생명주기에 따라, ViewModel이 클리어되기 전까지 이 작업은 계속 실행됩니다.
+        // 따라서 Compose가 구성 해제되더라도, 이 코루틴은 계속 실행됩니다.
         Button(onClick = { mainViewModel.collectInViewModel() }) {
             Text(text = "Click me (flow collect in viewModel)")
         }
@@ -102,6 +110,10 @@ class MainViewModel: ViewModel() {
         }
     }
 
+
+    // 패턴1: textStateFlow의 변경은 viewModelScope 내부에서 이루어지지만, 실제 수집은 Compose에서 발생
+    // 이 함수는 Compose 구성 해제 또는 Compose가 백스택으로 전환될 때에도 영향받지 않습니다.
+    // ViewModel이 클리어되기 전까지 계속 실행됩니다.
     fun emitFlow() {
         viewModelScope.launch {
             listOf("one", "two", "three", "four", "five", "six")
@@ -111,6 +123,10 @@ class MainViewModel: ViewModel() {
         }
     }
 
+
+    // 패턴2: collectInViewModel에서 listFlow를 직접 수집하고, textState2를 업데이트
+    // 이 함수는 Compose 구성 해제 또는 Compose가 백스택으로 전환될 때에도 영향받지 않습니다.
+    // ViewModel이 클리어되기 전까지 계속 실행됩니다.
     fun collectInViewModel() {
         val listFlow = listOf("one", "two", "three", "four", "five", "six").asFlow()
 
