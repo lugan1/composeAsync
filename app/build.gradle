@@ -84,6 +84,9 @@ dependencies {
 
     // Compose liveData
     implementation "androidx.compose.runtime:runtime-livedata:1.4.3"
+
+    // Compose Flow
+    implementation"androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
 }
 
 // Allow references to generated code
