@@ -71,6 +71,11 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
 
 
+    //RxJava 관련 의존
+    api 'io.reactivex.rxjava3:rxjava:3.1.4'
+    api 'io.reactivex.rxjava3:rxandroid:3.0.0'
+
+
     // Navigation Compose
     implementation "androidx.navigation:navigation-compose:2.6.0"
 
