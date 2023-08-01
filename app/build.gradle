@@ -75,6 +75,9 @@ dependencies {
     api 'io.reactivex.rxjava3:rxjava:3.1.4'
     api 'io.reactivex.rxjava3:rxandroid:3.0.0'
 
+    //RxJava3 -> State 변환
+    implementation 'androidx.compose.runtime:runtime-rxjava3:1.4.3'
+
 
     // Navigation Compose
     implementation "androidx.navigation:navigation-compose:2.6.0"

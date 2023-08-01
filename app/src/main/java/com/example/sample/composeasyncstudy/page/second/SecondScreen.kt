@@ -41,59 +41,6 @@ fun SecondScreen(navController: NavController, secondViewModel: SecondViewModel 
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "second page")
-            Spacer(modifier = Modifier.height(20.dp))
-            Button(onClick = { secondViewModel.startScan() }) {
-                Text(text = "스캔시작")
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-
-            ScanResultColumn(nums = secondViewModel._nums)
         }
     }
-}
-
-@Composable
-fun ScanResultColumn(nums : List<Int>) {
-    LazyColumn {
-        itemsIndexed(nums) { index, item ->
-            Text(text = "index: $index, item: $item")
-        }
-    }
-}
-
-@Composable
-fun ObservableListScreen() {
-    var list by remember { mutableStateOf(listOf<Int>()) }
-    val disposable = remember { CompositeDisposable() }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            disposable.clear()
-        }
-    }
-
-    Column(modifier = Modifier.padding(16.dp)) {
-        Button(onClick = {
-            val observable = Observable.fromIterable(listOf(1,2,3,4,5,6))
-            val subscriber = observable
-                .zipWith(Observable.interval(3, TimeUnit.SECONDS), { item, _ -> item })
-                .subscribe{
-                list = list + it
-            }
-        }) {
-            Text("Add Items")
-        }
-
-        LazyColumn{
-            itemsIndexed(list) { index, item ->
-                Text(text = "index: $index, item: $item")
-            }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewObservableListScreen() {
-    ObservableListScreen()
 }
